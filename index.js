@@ -12,23 +12,9 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
 mongoose.set('strictQuery', false);
-// mongoose.connect('mongodb+srv://KeerthanaShiva:ShreePrahlad%40412@cluster0.hjo1hqr.mongodb.net/?retryWrites=true&w=majority')
-// mongoose.connect('mongodb://127.0.0.1/todolistDB');
-const connectDB=mongoose.connect('mongodb+srv://KeerthanaShiva:ShreePrahlad%40412@cluster0.hjo1hqr.mongodb.net/?retryWrites=true&w=majority');
-
-// const connectDB=async () =>{
-//   try{
-//      const conn=await mongoose.connect(process.env.MONGO_URI);
-//      console.log("success");
-//      console.log('MongoDB connected:${conn.connection.host}');
-//   }
-//   catch(err){
-//     console.log("failed");
-// console.log(err);
-// process.exit(1);
-//   }
-// }
-
+const un=process.env.ADMIN_NAME;
+const pw=process.env.PASSWORD;
+const connectDB=mongoose.connect("mongodb+srv://"+un+":"+pw+"@cluster0.hjo1hqr.mongodb.net/?retryWrites=true&w=majority");
 
 let day = date();
 const itemSchema = new mongoose.Schema({
@@ -107,8 +93,6 @@ app.get("/:customListName", function (req, res) {
   })
 
 
-// let workItems=[];
-
 app.post("/", function (req, res) {
 console.log("hoo");
   const newItem = req.body.newItem;
@@ -136,24 +120,6 @@ console.log("hoo");
   }
 
 
-
-
-  //  console.log(req.body.list);
-  //  item=req.body.newItem;
-  //  if(req.body.list==="Work")
-  //  {
-  //     workItems.push(item);
-  //     res.redirect("/work");
-
-  //  }
-
-  //   else{
-  //      items.push(item);
-  //      res.redirect("/");
-  //   }
-
-})
-
 app.post("/delete", function (req, res) {
   const checkedItemId = req.body.checkbox;
   const listName = req.body.listName;
@@ -180,18 +146,6 @@ app.post("/delete", function (req, res) {
   }
 
 })
-
-// app.get("/work",function(req,res)
-// {
-//   res.render("lists",{listTitle:"Work list",newListItems:workItems});
-// })
-
-
-
-// app.get("/about",function(req,res)
-// {
-//    res.render("about");
-// })
 
   connectDB.then(() =>{
   app.listen(PORT, function () {
